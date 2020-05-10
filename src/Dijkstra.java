@@ -17,7 +17,7 @@ public class Dijkstra {
     /**
      * The Node for the Algorithm to start from
      */
-    String startNode;
+    Node startNode;
 
     /**
      * Initializes the network
@@ -95,6 +95,7 @@ public class Dijkstra {
                         + this.graph.get(this.graph.keySet().toArray()[i]).links
                         .get(this.graph.get(this.graph.keySet().toArray()[i]).links.keySet().toArray()[j]).id);
             }
+            System.out.println(this.graph.get(this.graph.keySet().toArray()[i]).bestDistance);
         }
     }
 
@@ -104,7 +105,8 @@ public class Dijkstra {
      * @param startNode The id of the start-node
      */
     void setStartNode(String startNode) {
-        this.startNode = startNode;
+        this.startNode = this.graph.get(startNode);
+        this.startNode.bestDistance = 0;
     }
 
     /**
@@ -113,7 +115,39 @@ public class Dijkstra {
     void setStartNodeFromUser() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Specify the start Node");
-        this.startNode = sc.next();
+        this.startNode = this.graph.get(sc.next());
+        this.startNode.bestDistance = 0;
+    }
+
+    /**
+     * The Dijkstra Algorithm calculations
+     *
+     * @param node The node to start from
+     */
+    void calculateBestNodeDistances(Node node) {
+        for (int i = 0; i < node.links.size(); i++) {
+            Node nextNode = node.links.get(node.links.keySet().toArray()[i]);
+            int calcDistance = node.bestDistance + Integer.parseInt(node.links.keySet().toArray()[i].toString());
+            if (calcDistance < nextNode.bestDistance) {
+                nextNode.bestDistance = calcDistance;
+            }
+        }
+        node.checked = true;
+
+        Node newNode = new Node();
+        Node toCalculateNext = newNode;
+        for (int i = 0; i < node.links.size(); i++) {
+            if (node.links.get(node.links.keySet().toArray()[i]).bestDistance < toCalculateNext.bestDistance) {
+                if (!node.links.get(node.links.keySet().toArray()[i]).checked) {
+                    toCalculateNext = node.links.get(node.links.keySet().toArray()[i]);
+                }
+            }
+        }
+        if (!toCalculateNext.equals(newNode)) {
+            calculateBestNodeDistances(toCalculateNext);
+        } else {
+            return;
+        }
     }
 
 }

@@ -4,8 +4,9 @@ public class Main {
         dijkstra.init();
         //dijkstra.readFromUser();
         dijkstra.loadTemplateNetwork();
-        dijkstra.printNetwork();
         dijkstra.setStartNode("C");
+        dijkstra.calculateBestNodeDistances(dijkstra.startNode);
+        dijkstra.printNetwork();
 
     }
 }

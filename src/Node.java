@@ -51,4 +51,10 @@ public class Node {
     public Node(String id) {
         this.id = id;
     }
+
+    /**
+     * Constructor for empty Node
+     */
+    public Node() {
+    }
 }
