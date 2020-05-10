@@ -150,4 +150,15 @@ public class Dijkstra {
         }
     }
 
+    /**
+     * Prints the routing table for the network
+     */
+    void printRoutingTable() {
+        for (int i = 0; i < this.graph.size(); i++) {
+            Node currentNode = this.graph.get(this.graph.keySet().toArray()[i]);
+            System.out.format("%10s%8s%10d", "Node " + currentNode.id, currentNode.checked, currentNode.bestDistance);
+            System.out.println();
+        }
+    }
+
 }

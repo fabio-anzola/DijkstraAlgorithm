@@ -7,6 +7,7 @@ public class Main {
         dijkstra.setStartNode("C");
         dijkstra.calculateBestNodeDistances(dijkstra.startNode);
         dijkstra.printNetwork();
+        dijkstra.printRoutingTable();
 
     }
 }
