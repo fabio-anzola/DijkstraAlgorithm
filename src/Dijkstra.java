@@ -15,6 +15,11 @@ public class Dijkstra {
     Map<String, Node> graph;
 
     /**
+     * The Node for the Algorithm to start from
+     */
+    String startNode;
+
+    /**
      * Initializes the network
      */
     void init() {
@@ -91,6 +96,24 @@ public class Dijkstra {
                         .get(this.graph.get(this.graph.keySet().toArray()[i]).links.keySet().toArray()[j]).id);
             }
         }
+    }
+
+    /**
+     * Sets the start-node from the Methods parameter
+     *
+     * @param startNode The id of the start-node
+     */
+    void setStartNode(String startNode) {
+        this.startNode = startNode;
+    }
+
+    /**
+     * User can set the start-node from prompt
+     */
+    void setStartNodeFromUser() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Specify the start Node");
+        this.startNode = sc.next();
     }
 
 }

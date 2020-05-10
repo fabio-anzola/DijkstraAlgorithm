@@ -5,6 +5,7 @@ public class Main {
         //dijkstra.readFromUser();
         dijkstra.loadTemplateNetwork();
         dijkstra.printNetwork();
+        dijkstra.setStartNode("C");
 
     }
 }
