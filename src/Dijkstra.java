@@ -107,6 +107,7 @@ public class Dijkstra {
     void setStartNode(String startNode) {
         this.startNode = this.graph.get(startNode);
         this.startNode.bestDistance = 0;
+        this.startNode.parent = new Node("/");
     }
 
     /**
@@ -117,6 +118,7 @@ public class Dijkstra {
         System.out.println("Specify the start Node");
         this.startNode = this.graph.get(sc.next());
         this.startNode.bestDistance = 0;
+        this.startNode.parent = new Node("/");
     }
 
     /**
@@ -140,6 +142,7 @@ public class Dijkstra {
             if (node.links.get(node.links.keySet().toArray()[i]).bestDistance < toCalculateNext.bestDistance) {
                 if (!node.links.get(node.links.keySet().toArray()[i]).checked) {
                     toCalculateNext = node.links.get(node.links.keySet().toArray()[i]);
+                    toCalculateNext.parent = node;
                 }
             }
         }
@@ -154,9 +157,12 @@ public class Dijkstra {
      * Prints the routing table for the network
      */
     void printRoutingTable() {
+        System.out.format("%11s%10s%11s%10s", "Node ID", "Visited", "Distance", "Parent ID");
+        System.out.println();
         for (int i = 0; i < this.graph.size(); i++) {
             Node currentNode = this.graph.get(this.graph.keySet().toArray()[i]);
-            System.out.format("%10s%8s%10d", "Node " + currentNode.id, currentNode.checked, currentNode.bestDistance);
+            System.out.format("%10s%8s%10d%10s", "Node " + currentNode.id, currentNode.checked,
+                    currentNode.bestDistance, currentNode.parent.id);
             System.out.println();
         }
     }

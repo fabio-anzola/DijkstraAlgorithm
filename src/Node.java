@@ -8,6 +8,11 @@ import java.util.Map;
 public class Node {
 
     /**
+     * The parent node of this Node
+     */
+    Node parent;
+
+    /**
      * The id for the Node (Name)
      */
     String id;
