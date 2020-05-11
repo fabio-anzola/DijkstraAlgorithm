@@ -16,24 +16,33 @@ public class Dijkstra {
     /**
      * The network-graph
      */
-    Map<String, Node> graph;
+    private Map<String, Node> graph;
 
     /**
      * The Node for the Algorithm to start from
      */
-    Node startNode;
+    private Node startNode;
 
     /**
      * Initializes the network
      */
-    void init() {
+    public void init() {
         this.graph = new HashMap<>();
+    }
+
+    /**
+     * Gets the StartNode
+     *
+     * @return StartingNode
+     */
+    public Node getStartNode() {
+        return startNode;
     }
 
     /**
      * Prompts the user to enter data for the network
      */
-    void readFromUser() {
+    public void readFromUser() {
         System.out.println("Number of nodes");
         Scanner sc = new Scanner(System.in);
         int nrNodes = sc.nextInt();
@@ -61,7 +70,7 @@ public class Dijkstra {
      * Loads prefabricated Network form the given link
      * (for Debugging)
      */
-    void loadTemplateNetwork() {
+    public void loadTemplateNetwork() {
         //Loads this Network https://www.codingame.com/servlet/fileservlet?id=14497257275137
         String[] nodes = {"A", "B", "C", "D", "E"};
         for (String node : nodes) {
@@ -91,7 +100,7 @@ public class Dijkstra {
      * Prints out the Network "diagram"
      * (for Debugging)
      */
-    void printNetwork() {
+    public void printNetwork() {
         for (int i = 0; i < this.graph.size(); i++) {
             System.out.println("Node " + this.graph.keySet().toArray()[i]);
             for (int j = 0; j < this.graph.get(this.graph.keySet().toArray()[i]).links.size(); j++) {
@@ -108,7 +117,7 @@ public class Dijkstra {
      *
      * @param startNode The id of the start-node
      */
-    void setStartNode(String startNode) {
+    public void setStartNode(String startNode) {
         this.startNode = this.graph.get(startNode);
         this.startNode.bestDistance = 0;
         this.startNode.parent = new Node("/");
@@ -117,7 +126,7 @@ public class Dijkstra {
     /**
      * User can set the start-node from prompt
      */
-    void setStartNodeFromUser() {
+    public void setStartNodeFromUser() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Specify the start Node");
         this.startNode = this.graph.get(sc.next());
@@ -130,7 +139,7 @@ public class Dijkstra {
      *
      * @param node The node to start from
      */
-    void calculateBestNodeDistances(Node node) {
+    public void calculateBestNodeDistances(Node node) {
         for (int i = 0; i < node.links.size(); i++) {
             Node nextNode = node.links.get(node.links.keySet().toArray()[i]);
             int calcDistance = node.bestDistance + Integer.parseInt(node.links.keySet().toArray()[i].toString());
@@ -158,7 +167,7 @@ public class Dijkstra {
     /**
      * Prints the routing table for the network
      */
-    void printRoutingTable() {
+    public void printRoutingTable() {
         String parentNodeID;
         System.out.format("%11s%10s%11s%10s", "Node ID", "Visited", "Distance", "Parent ID");
         System.out.println();
@@ -182,7 +191,7 @@ public class Dijkstra {
      * @param path The path to the Network-File
      * @throws IOException If an IO Error occurs
      */
-    void readFromFile(String path) throws IOException {
+    public void readFromFile(String path) throws IOException {
         List<String> readFile = Files.readAllLines(Paths.get(path));
         for (String s : readFile) {
             if (!s.startsWith("#")) {

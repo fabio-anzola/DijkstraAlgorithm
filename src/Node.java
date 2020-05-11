@@ -11,28 +11,28 @@ public class Node {
     /**
      * The parent node of this Node
      */
-    Node parent;
+    protected Node parent;
 
     /**
      * The id for the Node (Name)
      */
-    String id;
+    protected String id;
 
     /**
      * Stores the distance (current best distance) for the Node
      */
-    int bestDistance = Integer.MAX_VALUE;
+    protected int bestDistance = Integer.MAX_VALUE;
 
     /**
      * Stores to whom the Node is connected to
      * (Connected to which other Nodes)
      */
-    Map<Integer, Node> links = new HashMap<>();
+    protected Map<Integer, Node> links = new HashMap<>();
 
     /**
      * Checked and done (finished) Node
      */
-    boolean checked;
+    protected boolean checked;
 
     /**
      * Constructor for all parameters of the Node

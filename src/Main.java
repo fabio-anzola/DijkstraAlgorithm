@@ -9,7 +9,7 @@ public class Main {
         //dijkstra.readFromFile("resources/Network01.txt");
         //dijkstra.printNetwork();
         dijkstra.setStartNode("C");
-        dijkstra.calculateBestNodeDistances(dijkstra.startNode);
+        dijkstra.calculateBestNodeDistances(dijkstra.getStartNode());
         //dijkstra.printNetwork();
         dijkstra.printRoutingTable();
 
