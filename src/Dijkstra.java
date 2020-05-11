@@ -43,22 +43,22 @@ public class Dijkstra {
      * Prompts the user to enter data for the network
      */
     public void readFromUser() {
-        System.out.println("Number of nodes");
+        System.out.print("Number of nodes: ");
         Scanner sc = new Scanner(System.in);
         int nrNodes = sc.nextInt();
         for (int i = 0; i < nrNodes; i++) {
-            System.out.println("Node name");
+            System.out.print("Name for Node #" + (i + 1) + ": ");
             String ndName = sc.next();
             this.graph.put(ndName, new Node(ndName));
         }
 
         for (int i = 0; i < this.graph.size(); i++) {
-            System.out.println("How many connections " + this.graph.keySet().toArray()[i]);
+            System.out.print("How many connections does Node " + this.graph.keySet().toArray()[i] + " have? ");
             int conn = sc.nextInt();
             for (int j = 0; j < conn; j++) {
-                System.out.println("Connection distance");
+                System.out.print("Connection distance on #" + (j + 1) + " on Node " + this.graph.keySet().toArray()[i] + ": ");
                 int dist = sc.nextInt();
-                System.out.println("Connected to");
+                System.out.print("Connection #" + (j + 1) + " on Node " + this.graph.keySet().toArray()[i] + " connected to: ");
                 String name = sc.next();
                 this.graph.get(this.graph.keySet().toArray()[i]).links.put(dist, this.graph.get(name));
             }
@@ -168,6 +168,7 @@ public class Dijkstra {
      * Prints the routing table for the network
      */
     public void printRoutingTable() {
+        System.out.println();
         String parentNodeID;
         System.out.format("%11s%10s%11s%10s", "Node ID", "Visited", "Distance", "Parent ID");
         System.out.println();
