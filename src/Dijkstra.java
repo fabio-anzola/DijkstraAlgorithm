@@ -1,4 +1,8 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -148,8 +152,6 @@ public class Dijkstra {
         }
         if (!toCalculateNext.equals(newNode)) {
             calculateBestNodeDistances(toCalculateNext);
-        } else {
-            return;
         }
     }
 
@@ -157,13 +159,51 @@ public class Dijkstra {
      * Prints the routing table for the network
      */
     void printRoutingTable() {
+        String parentNodeID;
         System.out.format("%11s%10s%11s%10s", "Node ID", "Visited", "Distance", "Parent ID");
         System.out.println();
         for (int i = 0; i < this.graph.size(); i++) {
             Node currentNode = this.graph.get(this.graph.keySet().toArray()[i]);
+            try {
+                parentNodeID = currentNode.parent.id;
+            }
+            catch (NullPointerException e) {
+                parentNodeID = "404";
+            }
             System.out.format("%10s%8s%10d%10s", "Node " + currentNode.id, currentNode.checked,
-                    currentNode.bestDistance, currentNode.parent.id);
+                    currentNode.bestDistance, parentNodeID);
             System.out.println();
+        }
+    }
+
+    /**
+     * Loads the Network from a file
+     *
+     * @param path The path to the Network-File
+     * @throws IOException If an IO Error occurs
+     */
+    void readFromFile(String path) throws IOException {
+        List<String> readFile = Files.readAllLines(Paths.get(path));
+        for (String s : readFile) {
+            if (!s.startsWith("#")) {
+                if (!s.startsWith("-")) {
+                    String ndName = s.split(" ")[0];
+                    this.graph.put(ndName, new Node(ndName));
+                }
+            }
+        }
+        Node currentNode = new Node();
+        for (String s : readFile) {
+            if (!s.startsWith("#")) {
+                if (s.startsWith("-")) {
+
+                    int dist = Integer.parseInt(s.split(" ")[1]);
+                    Node goingTo = this.graph.get(s.split(" ")[2]);
+                    currentNode.links.put(dist, goingTo);
+                } else {
+                    currentNode = this.graph.get(s);
+                }
+            }
         }
     }
 

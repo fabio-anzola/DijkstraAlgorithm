@@ -3,6 +3,7 @@ import java.util.Map;
 
 /**
  * The Node class for the Dijkstra Algorithm
+ *
  * @author fabioanzola
  */
 public class Node {
@@ -36,10 +37,10 @@ public class Node {
     /**
      * Constructor for all parameters of the Node
      *
-     * @param id The id for the Node
+     * @param id           The id for the Node
      * @param bestDistance The best distance for the Node
-     * @param links The Map of other nodes which this Node is connected to
-     * @param checked If this node is already checked (finished)
+     * @param links        The Map of other nodes which this Node is connected to
+     * @param checked      If this node is already checked (finished)
      */
     public Node(String id, int bestDistance, Map<Integer, Node> links, boolean checked) {
         this.id = id;
