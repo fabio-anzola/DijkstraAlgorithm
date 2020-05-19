@@ -60,7 +60,7 @@ public class Dijkstra {
                 int dist = sc.nextInt();
                 System.out.print("Connection #" + (j + 1) + " on Node " + this.graph.keySet().toArray()[i] + " connected to: ");
                 String name = sc.next();
-                this.graph.get(this.graph.keySet().toArray()[i]).links.put(dist, this.graph.get(name));
+                this.graph.get(this.graph.keySet().toArray()[i]).links.put(this.graph.get(name), dist);
             }
         }
 
@@ -76,24 +76,24 @@ public class Dijkstra {
         for (String node : nodes) {
             this.graph.put(node, new Node(node));
         }
-        this.graph.get("A").links.put(3, this.graph.get("B"));
-        this.graph.get("A").links.put(1, this.graph.get("C"));
+        this.graph.get("A").links.put(this.graph.get("B"), 3);
+        this.graph.get("A").links.put(this.graph.get("C"), 1);
 
-        this.graph.get("B").links.put(3, this.graph.get("A"));
-        this.graph.get("B").links.put(7, this.graph.get("C"));
-        this.graph.get("B").links.put(5, this.graph.get("D"));
-        this.graph.get("B").links.put(1, this.graph.get("E"));
+        this.graph.get("B").links.put(this.graph.get("A"), 3);
+        this.graph.get("B").links.put(this.graph.get("C"), 7);
+        this.graph.get("B").links.put(this.graph.get("D"), 5);
+        this.graph.get("B").links.put(this.graph.get("E"), 1);
 
-        this.graph.get("C").links.put(1, this.graph.get("A"));
-        this.graph.get("C").links.put(7, this.graph.get("B"));
-        this.graph.get("C").links.put(2, this.graph.get("D"));
+        this.graph.get("C").links.put(this.graph.get("A"), 1);
+        this.graph.get("C").links.put(this.graph.get("B"), 7);
+        this.graph.get("C").links.put(this.graph.get("D"), 2);
 
-        this.graph.get("D").links.put(2, this.graph.get("C"));
-        this.graph.get("D").links.put(5, this.graph.get("B"));
-        this.graph.get("D").links.put(7, this.graph.get("E"));
+        this.graph.get("D").links.put(this.graph.get("C"), 2);
+        this.graph.get("C").links.put(this.graph.get("B"), 5);
+        this.graph.get("C").links.put(this.graph.get("E"), 7);
 
-        this.graph.get("E").links.put(1, this.graph.get("B"));
-        this.graph.get("E").links.put(7, this.graph.get("D"));
+        this.graph.get("E").links.put(this.graph.get("B"), 1);
+        this.graph.get("E").links.put(this.graph.get("D"), 7);
     }
 
     /**
@@ -103,12 +103,13 @@ public class Dijkstra {
     public void printNetwork() {
         for (int i = 0; i < this.graph.size(); i++) {
             System.out.println("Node " + this.graph.keySet().toArray()[i]);
-            for (int j = 0; j < this.graph.get(this.graph.keySet().toArray()[i]).links.size(); j++) {
-                System.out.println(this.graph.get(this.graph.keySet().toArray()[i]).links.keySet().toArray()[j] + "="
-                        + this.graph.get(this.graph.keySet().toArray()[i]).links
-                        .get(this.graph.get(this.graph.keySet().toArray()[i]).links.keySet().toArray()[j]).id);
+            Node thisNode = this.graph.get(this.graph.keySet().toArray()[i]);
+            for (int j = 0; j < thisNode.links.size(); j++) {
+                Node selectedNode = (Node) (thisNode.links.keySet().toArray()[j]);
+                String thisID = selectedNode.id;
+                System.out.println(thisID + " = " + thisNode.links.get(selectedNode));
             }
-            System.out.println(this.graph.get(this.graph.keySet().toArray()[i]).bestDistance);
+            System.out.println(thisNode.bestDistance);
         }
     }
 
@@ -141,26 +142,34 @@ public class Dijkstra {
      */
     public void calculateBestNodeDistances(Node node) {
         for (int i = 0; i < node.links.size(); i++) {
-            Node nextNode = node.links.get(node.links.keySet().toArray()[i]);
-            int calcDistance = node.bestDistance + Integer.parseInt(node.links.keySet().toArray()[i].toString());
-            if (calcDistance < nextNode.bestDistance) {
-                nextNode.bestDistance = calcDistance;
+            Node nextNode = (Node) node.links.keySet().toArray()[i];
+            int dist = node.bestDistance + node.links.get(nextNode);
+            if (dist < nextNode.bestDistance) {
+                nextNode.parent = node;
+                nextNode.bestDistance = dist;
             }
         }
         node.checked = true;
 
         Node newNode = new Node();
+        int x = Integer.MAX_VALUE;
         Node toCalculateNext = newNode;
         for (int i = 0; i < node.links.size(); i++) {
-            if (node.links.get(node.links.keySet().toArray()[i]).bestDistance < toCalculateNext.bestDistance) {
-                if (!node.links.get(node.links.keySet().toArray()[i]).checked) {
-                    toCalculateNext = node.links.get(node.links.keySet().toArray()[i]);
-                    toCalculateNext.parent = node;
+            Node nodeTmp = (Node) node.links.keySet().toArray()[i];
+            if (nodeTmp.bestDistance < x) {
+                if (!nodeTmp.checked) {
+                    x = nodeTmp.bestDistance;
+                    toCalculateNext = nodeTmp;
+                    //toCalculateNext.parent = node;
                 }
             }
         }
-        if (!toCalculateNext.equals(newNode)) {
+        if (toCalculateNext.bestDistance != (newNode.bestDistance)) {
             calculateBestNodeDistances(toCalculateNext);
+        }
+
+        for (int i = 0; i < this.graph.size(); i++) {
+            this.graph.get(this.graph.keySet().toArray()[i]).checked = true;
         }
     }
 
@@ -174,12 +183,7 @@ public class Dijkstra {
         System.out.println();
         for (int i = 0; i < this.graph.size(); i++) {
             Node currentNode = this.graph.get(this.graph.keySet().toArray()[i]);
-            try {
-                parentNodeID = currentNode.parent.id;
-            }
-            catch (NullPointerException e) {
-                parentNodeID = "404";
-            }
+            parentNodeID = currentNode.parent.id;
             System.out.format("%10s%8s%10d%10s", "Node " + currentNode.id, currentNode.checked,
                     currentNode.bestDistance, parentNodeID);
             System.out.println();
@@ -209,7 +213,7 @@ public class Dijkstra {
 
                     int dist = Integer.parseInt(s.split(" ")[1]);
                     Node goingTo = this.graph.get(s.split(" ")[2]);
-                    currentNode.links.put(dist, goingTo);
+                    currentNode.links.put(goingTo, dist);
                 } else {
                     currentNode = this.graph.get(s);
                 }

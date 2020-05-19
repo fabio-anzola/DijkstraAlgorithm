@@ -27,7 +27,7 @@ public class Node {
      * Stores to whom the Node is connected to
      * (Connected to which other Nodes)
      */
-    protected Map<Integer, Node> links = new HashMap<>();
+    protected Map<Node, Integer> links = new HashMap<>();
 
     /**
      * Checked and done (finished) Node
@@ -42,7 +42,7 @@ public class Node {
      * @param links        The Map of other nodes which this Node is connected to
      * @param checked      If this node is already checked (finished)
      */
-    public Node(String id, int bestDistance, Map<Integer, Node> links, boolean checked) {
+    public Node(String id, int bestDistance, Map<Node, Integer> links, boolean checked) {
         this.id = id;
         this.bestDistance = bestDistance;
         this.links = links;

@@ -1,0 +1,23 @@
+#Test-Network 02
+A
+- 4 B
+- 1 C
+B
+- 4 A
+- 2 C
+- 3 F
+C
+- 1 A
+- 2 B
+- 8 D
+- 1 E
+D
+- 8 C
+- 1 F
+E
+- 1 C
+- 2 F
+F
+- 3 B
+- 1 D
+- 2 E
